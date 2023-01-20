@@ -1,0 +1,10 @@
+.DS_Store
+
+application/cache/*
+application/config/database.php
+upload/*
+upload/
+logs/*
+composer.json
+composer.lock
+old_good_charts/*

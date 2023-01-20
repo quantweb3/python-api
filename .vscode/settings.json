@@ -1,0 +1,32 @@
+{
+  "phpmd.verbose": true,
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#65c89b",
+    "activityBar.activeBorder": "#080818",
+    "activityBar.background": "#65c89b",
+    "activityBar.foreground": "#050114",
+    "activityBar.inactiveForeground": "#05011499",
+    "sash.hoverBorder": "#65c89b",
+    "statusBar.background": "#42b883",
+    "statusBar.foreground": "#050114",
+    "statusBarItem.hoverBackground": "#359268",
+    "statusBarItem.remoteBackground": "#42b883",
+    "statusBarItem.remoteForeground": "#050114",
+    "titleBar.activeBackground": "#42b883",
+    "titleBar.activeForeground": "#050114",
+    "titleBar.inactiveBackground": "#42b88399",
+    "titleBar.inactiveForeground": "#05011499",
+    "commandCenter.border": "#05011499",
+    "editorGroup.border": "#65c89b",
+    "panel.border": "#65c89b",
+    "sideBar.border": "#65c89b",
+    "statusBar.border": "#42b883",
+    "statusBar.debuggingBackground": "#b84277",
+    "statusBar.debuggingBorder": "#b84277",
+    "statusBar.debuggingForeground": "#e7e7e7",
+    "tab.activeBorder": "#65c89b",
+    "titleBar.border": "#42b883"
+  },
+  "peacock.color": "#42b883",
+  "editor.fontSize": 13
+}
