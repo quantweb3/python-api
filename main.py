@@ -3,7 +3,7 @@ from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 # 导入子路由
 from routers import user_router, item_router,stock_router
- 
+import os
 
 # 主路由
 app = FastAPI(
@@ -28,8 +28,8 @@ app.add_middleware(
 
 
 # 添加子路由
-app.include_router(user_router)
-app.include_router(item_router)
+# app.include_router(user_router)
+# app.include_router(item_router)
 app.include_router(stock_router)
 
  
