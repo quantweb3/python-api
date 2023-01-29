@@ -16,16 +16,9 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-print('BAsE_DIR: ', BASE_DIR)
-
 ROOT_DIR = Path(__file__).resolve().parent
-
-print('ROOT_DIR: ', ROOT_DIR)
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-ai!-y!sb$u&xq27-!73dt9_gn*i4(9d5kg2(t1)%70k4tn*zr4'
 
