@@ -5,11 +5,23 @@ from fastapi.middleware.cors import CORSMiddleware
 from routers import user_router, item_router,stock_router,stockfilter_router
 import os
 
+
+tags_metadata = [
+    {
+        # name 要对应 tags 参数值
+        "name": "stock",
+        "description": "Operations with users. The **login** logic is also here.",
+    }
+]
+
 # 主路由
 app = FastAPI(
-    # 声明全局依赖项
-    # 如果每个 APIRouter 都会用到这个依赖项，那么应该声明为全局依赖项
     
+    title="Zen",
+    description="基于Zen的API后台",
+    version="0.0.1",
+    terms_of_service="http://example.com/terms/",
+    tags_metadata=tags_metadata
 )
 
 
@@ -28,13 +40,8 @@ app.add_middleware(
 
 
 # 添加子路由
-# app.include_router(user_router)
-# app.include_router(item_router)
 app.include_router(stock_router)
 app.include_router(stockfilter_router)
-
-
- 
 
 
 @app.get("/")

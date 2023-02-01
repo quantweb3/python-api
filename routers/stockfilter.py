@@ -33,4 +33,27 @@ async def filter213():
     filter213.filterAll().saveFilterResult()
     jsoutput= jsonpickle.encode( {"code":200,"stocks":  filter213.filterResults  } ,unpicklable=False )
     return jsoutput 
+
+
+
+## 筛选:三低
+@stockfilter_router.post('/filterThreeLow',tags=["stockfilter"])
+def filterThreeLow():
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
+    filter3D=StockFilterThreeDown({})
+    filter3D.filterAll().saveFilterResult()
+    jsoutput= jsonpickle.encode( {"code":200,"stocks":  filter3D.filterResults  } ,unpicklable=False )
+    return jsoutput     
+    
+ 
+## 筛选:三低 高开低走巨阴
+@stockfilter_router.post('/filterOpenHighCloseLowVolUp')
+def filterOpenHighCloseLowVolUp( item: dict ):
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
+    filterHLV=StockFilterHIghLowVolUp(item)
+    filterHLV.filterAll().saveFilterResult()
+    jsoutput= jsonpickle.encode( {"code":200,"stocks":filterHLV.filterResults} ,unpicklable=False )
+    print(jsoutput)
+    return jsoutput 
+
     

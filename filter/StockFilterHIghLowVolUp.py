@@ -15,7 +15,6 @@ class StockFilterHIghLowVolUp(StockFilter):
         StockFilter.__init__(self,config)
         self.limitUpRateSH=1.1  ##6xxxx 上海
         self.limitUpRateSZ=1.1  ##00xxxx 3XXXX 深圳
-        
         self.NextDayVolumeFactor =float(config.get('NextDayVolumeFactor'))
         self.startDate=config.get('startDate')   
         self.endDate= config.get('endDate')   

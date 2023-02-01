@@ -16,7 +16,6 @@ stock_router = APIRouter(
     prefix="/stock",
     # 标签
     tags=["stock"],
-  
     # 响应
     responses={404: {"description": "stocks Not found"}}
 )
@@ -50,7 +49,7 @@ async def CreateOneStockZenChart(code,frequency):
 
 
 
-@stock_router.post('/kline')
+@stock_router.post('/kline',tags=['stock'])
 async def kline(item: dict):
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
     code=item['code']
