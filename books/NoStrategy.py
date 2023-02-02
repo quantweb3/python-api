@@ -9,11 +9,13 @@ from pprint import pprint
 from indicators.indicator_goodday import *
 sys.path.append("..")
 from tools.debuger import *
-from indicators.mytrix import MyTrix
+from indicators.Bias import Bias
+
 
 class NoStrategy(bt.Strategy):
     params = (('trixperiod', 15),)
 
     def __init__(self):
-        MyTrix(self.data, period=self.p.trixperiod) 
+        # Bias(self.data, period=self.p.trixperiod) 
+        print('11')
  

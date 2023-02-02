@@ -9,17 +9,19 @@ from pprint import pprint
 from indicators.indicator_goodday import *
 sys.path.append("..")
 from tools.debuger import *
-from indicators.mytrix import MyTrix
+from indicators.Bias import Bias
 
 class TestStrategy(bt.Strategy):
     #  策略参数
     params = (
-        ('maperiod', 15),
+        
         ('defaultSize',1),
         ('printlog', True),
-        ('trixperiod',15),
+        
+        ('bias_period',20),  # Bias指标周期
     )
-
+    
+   
 
     def log(self, txt, dt=None):
         ''' 记录功能'''
@@ -29,7 +31,7 @@ class TestStrategy(bt.Strategy):
     def __init__(self):
         
         hello()
-        MyTrix(self.data, period=self.p.trixperiod) 
+        self.bias = Bias(self.datas[0], MA_period=self.p.bias_period)
 
         # 引用到数据的close Line
         self.dataclose = self.datas[0].close
