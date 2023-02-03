@@ -29,5 +29,7 @@
   },
   "peacock.color": "#42b883",
   "editor.fontSize": 13,
-  "python.linting.enabled": false
+  "python.linting.enabled": false,
+  "jupyter.sendSelectionToInteractiveWindow": true,
+  "jupyter.themeMatplotlibPlots": true
 }

@@ -6,7 +6,6 @@ from datetime import datetime
 from colorama import Fore, Back, Style
 import sys
 from pprint import pprint
-from indicators.indicator_goodday import *
 sys.path.append("..")
 from tools.debuger import *
 from indicators.Bias import Bias
@@ -17,7 +16,6 @@ class TestStrategy(bt.Strategy):
         
         ('defaultSize',1),
         ('printlog', True),
-        
         ('bias_period',20),  # Bias指标周期
     )
     
@@ -26,33 +24,30 @@ class TestStrategy(bt.Strategy):
     def log(self, txt, dt=None):
         ''' 记录功能'''
         dt = dt or self.datas[0].datetime.date(0)
-        print('%s, %s' % (dt.isoformat(), txt))
+        # print('%s, %s' % (dt.isoformat(), txt))
 
     def __init__(self):
         
-        hello()
-        self.bias = Bias(self.datas[0], MA_period=self.p.bias_period)
+        print("TestStrategy __init   &&&&&")
+        self.bias = Bias( self.data,subplot=True, plotforce=True,  plotabove=True, plotname="指标1",MA_period=self.p.bias_period)
 
         # 引用到数据的close Line
         self.dataclose = self.datas[0].close
-        print( "debug >>>>>>>>"  )
-        print( type(self.datas[0]._dataname) )
-        printtable( self.datas[0]._dataname )
-        print( "debug <<<<<<<<<<<<<<<<<    ")
+       
+        # printtable( self.datas[0]._dataname )
 
         
         # 跟踪订单
         self.order = None
         
-        # self.sma = bt.indicators.SimpleMovingAverage(
-        #     self.datas[0], period=self.params.maperiod)
+      
 
     def notify_order(self, order):
         if order.status in [order.Submitted, order.Accepted]:
             # 订单提交和成交当前不做处理
             return
         
-        pprint(order)
+        # pprint(order)
         # self.log('OPERATION PROFIT, GROSS  NET %.2f' %
         #          ( order.pnlcomm))    
 
