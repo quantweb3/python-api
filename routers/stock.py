@@ -21,6 +21,25 @@ stock_router = APIRouter(
 )
 
 
+@stock_router.post('/kline',tags=['stock'])
+async def kline(item: dict):
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
+    code=item['code']
+    print(code)
+    frequencys=item['frequencys']
+    print(frequencys)
+    # loop frequencys to create charts
+    
+    charts=[]
+    for frequency in frequencys:
+        chart = await CreateOneStockZenChart(code,frequency)
+        charts.append(chart)
+    
+    json_compatible_item_data = jsonable_encoder({"code":200,"charts":charts})
+    return JSONResponse(content=json_compatible_item_data)
+ 
+ 
+
 
 async def CreateOneStockZenChart(code,frequency):
 
@@ -49,24 +68,6 @@ async def CreateOneStockZenChart(code,frequency):
 
 
 
-@stock_router.post('/kline',tags=['stock'])
-async def kline(item: dict):
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
-    code=item['code']
-    print(code)
-    frequencys=item['frequencys']
-    print(frequencys)
-    # loop frequencys to create charts
-    
-    charts=[]
-    for frequency in frequencys:
-        chart = await CreateOneStockZenChart(code,frequency)
-        charts.append(chart)
-    
-    json_compatible_item_data = jsonable_encoder({"code":200,"charts":charts})
-    return JSONResponse(content=json_compatible_item_data)
- 
- 
 
  
 # 搜索股票代码

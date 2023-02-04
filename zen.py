@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 # 导入子路由
-from routers import user_router, item_router,stock_router,stockfilter_router
+from routers import stock_router,stockfilter_router,bttest
 import os
 
 
@@ -18,7 +18,7 @@ tags_metadata = [
 app = FastAPI(
     
     title="Zen",
-    description="基于Zen的API后台",
+    description="基于Zen的python-API后台",
     version="0.0.1",
     terms_of_service="http://example.com/terms/",
     tags_metadata=tags_metadata
@@ -35,14 +35,10 @@ app.add_middleware(
 )
 
 
-
-
-
-
 # 添加子路由
 app.include_router(stock_router)
 app.include_router(stockfilter_router)
-
+app.include_router(bttest)
 
 @app.get("/")
 async def root():
