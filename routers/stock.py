@@ -1,3 +1,5 @@
+import os
+import sys
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
@@ -5,9 +7,6 @@ from chanlun import rd, stock_dl_rank, kcharts, zixuan
 from chanlun.cl_utils import web_batch_get_cl_datas, query_cl_chart_config, kcharts_frequency_h_l_map
 from chanlun.exchange import get_exchange, Market
 from django.http import HttpResponse
-from . import utils
-import os
-import sys
 
 
 stock_router = APIRouter(

@@ -9,7 +9,6 @@ from filter.StockFilterThreeDown import StockFilterThreeDown
 from filter.StockFilterHIghLowVolUp import StockFilterHIghLowVolUp
 from filter.StockFilter213 import StockFilter213
 import jsonpickle
-from . import utils
 import os
 import sys
 

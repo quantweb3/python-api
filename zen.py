@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 # 导入子路由
 from routers import stock_router,stockfilter_router,bttest
 import os
@@ -39,6 +40,8 @@ app.add_middleware(
 app.include_router(stock_router)
 app.include_router(stockfilter_router)
 app.include_router(bttest)
+
+app.mount('/public', StaticFiles(directory="tmphtml"), 'public')
 
 @app.get("/")
 async def root():
