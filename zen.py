@@ -1,23 +1,14 @@
-import uvicorn
+import uvicorn,os
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 # 导入子路由
 from routers import stock_router,stockfilter_router,bttest
-import os
 
+tags_metadata = [{"name":"stock","description":"ZenFramework"}]
 
-tags_metadata = [
-    {
-        # name 要对应 tags 参数值
-        "name": "stock",
-        "description": "Operations with users. The **login** logic is also here.",
-    }
-]
-
-# 主路由
+ 
 app = FastAPI(
-    
     title="Zen",
     description="基于Zen的python-API后台",
     version="0.0.1",
@@ -27,13 +18,7 @@ app = FastAPI(
 
 
 origins = ["*"]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,allow_methods=["*"],allow_headers=["*"],)
 
 
 # 添加子路由
@@ -41,11 +26,13 @@ app.include_router(stock_router)
 app.include_router(stockfilter_router)
 app.include_router(bttest)
 
+## 静态文件
 app.mount('/public', StaticFiles(directory="tmphtml"), 'public')
 
 @app.get("/")
 async def root():
-    return {"message": "Hello Bigger Applications!"}
+    return {"message": "Hello Zen"}
+
 
 
 if __name__ == "__main__":

@@ -1,32 +1,31 @@
 from __future__ import (absolute_import, division, print_function, unicode_literals)
-import os
-import sys
+import os,sys
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from django.http import HttpResponse
 import backtrader as bt
 import pandas as pd
+import random
 from datetime import datetime
-import  IPython   
+import IPython   
 from btplotting import BacktraderPlottingLive
 from btplotting import BacktraderPlotting
+from tools.functions import saveplots
 import matplotlib 
-matplotlib.rc("font", family='Microsoft YaHei')# 增加
-
-
 sys.path.append("..")
 from strategy.TestStrategy import TestStrategy
 
 
+matplotlib.rc("font", family='Microsoft YaHei')# 增加
+
+
 bttest = APIRouter(
     prefix="/bttest",
-    # 标签
     tags=["bttest"],
-    # 响应
-    responses={404: {"description": "bttest_router  found"}}
-    
+    responses={404: {"description": "404"}}
 )
+
 
 @bttest.post('/bttestChart')
 async def bttestChart():
@@ -57,19 +56,20 @@ async def bttestChart():
     
     cerebro.run()
     
-    p = BacktraderPlotting(style='bar', output_mode='save', filename='tmphtml/abc.html' )
-    print("---show start-------->")
-    print("--show end--------->")
+    # generate random file name by date 
+    filename=  datetime.now().strftime("%Y%m%d%H%M%S")+ str(random.randint(100000,999999))
+    
+    
+    #  f-string  add .png to filename
+    pngname  = f'tmphtml/{filename}.png'
+    htmlname = f'tmphtml/{filename}.html'
+     
+    saveplots(cerebro, file_path =pngname) #run it
+    p = BacktraderPlotting(style='bar', output_mode='save', filename=htmlname )
     cerebro.plot(p , iplot=False)
-    
-    portvalue = cerebro.broker.getvalue()
-    pnl = portvalue - startcash
-    #打印结果
-    print(f'初始: {round(startcash,2)}')
-    print(f'总资金: {round(portvalue,2)}')
-    
-
-    json_compatible_item_data = jsonable_encoder({"code":200,"filename":"aa"})
+        
+    # replace htmlname substirng tmphtml to public
+    json_compatible_item_data = jsonable_encoder({"code":200,"htmlname":htmlname.replace('tmphtml','public'),"pngname": pngname.replace('tmphtml','public')})
     return JSONResponse(content=json_compatible_item_data)
 
     

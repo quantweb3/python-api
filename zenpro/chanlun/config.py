@@ -12,11 +12,11 @@ LOGIN_PWD = 'cl123456'
 PROXY_HOST = '127.0.0.1'
 PROXY_PORT = '7890'
 
-# 数据库配置
-DB_HOST = '127.0.0.1'
+# 数据库配置 h103.151.148.2 -pcnix@123456
+DB_HOST = '103.151.148.2'
 DB_PORT = 3306
-DB_USER = 'root'
-DB_PWD = 'sinnet123456'
+DB_USER = 'mysqlx'
+DB_PWD = 'cnix@123456'
 DB_DATABASE = 'chanlun_klines'
 
 # Redis 配置

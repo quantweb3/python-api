@@ -4,6 +4,9 @@ application/cache/*
 application/config/database.php
 upload/*
 upload/
+
+tmphtml/
+tmphtml/*
 logs/*
 composer.json
 composer.lock
