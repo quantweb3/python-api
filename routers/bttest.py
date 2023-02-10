@@ -30,6 +30,36 @@ bttest = APIRouter(
 )
 
 
+def saveResult(cerebro,strats):
+    
+    # generate random file name by date 
+    filename=  datetime.now().strftime("%Y%m%d%H%M%S")+ str(random.randint(100000,999999))
+    pngname  = f'tmphtml/{filename}.png'
+    btplotting_htmlname = f'tmphtml/btplotting_{filename}.html'
+    quantstats_htmlname = f'tmphtml/quantstats_{filename}.html'
+    
+    strat0 = strats[0]
+    pyProfile = strat0.analyzers.getbyname('pyfolio')
+    returns, positions, transactions, gross_lev = pyProfile.get_pf_items() 
+  
+    returns.index = returns.index.tz_convert(None)
+    quantstats.reports.html(returns,  download_filename= quantstats_htmlname , output= True, title='分析报告')
+    
+    scheme = bt.plot.PlotScheme()
+    scheme.grid=False
+    scheme.subtxtsize =44 
+        
+    
+    # save orginal plot to png 
+    saveplots(cerebro,scheme ,volume=False, file_path =pngname) #run it
+    
+    # save using BacktraderPlotting
+    p = BacktraderPlotting(style='bar', output_mode='save', filename=btplotting_htmlname )
+    cerebro.plot(p , iplot=False)
+    
+
+
+
 @bttest.post('/bttestChart')
 async def bttestChart():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
@@ -58,44 +88,9 @@ async def bttestChart():
     # cerebro.addanalyzer(BacktraderPlotting)
     
     cerebro.addanalyzer(bt.analyzers.PyFolio , _name='pyfolio')
-
-    # generate random file name by date 
-    filename=  datetime.now().strftime("%Y%m%d%H%M%S")+ str(random.randint(100000,999999))
-    pngname  = f'tmphtml/{filename}.png'
-    btplotting_htmlname = f'tmphtml/btplotting_{filename}.html'
-    quantstats_htmlname = f'tmphtml/quantstats_{filename}.html'
-    
-    
-    
     strats = cerebro.run()
-    strat0 = strats[0]
-    pyProfile = strat0.analyzers.getbyname('pyfolio')
-    returns, positions, transactions, gross_lev = pyProfile.get_pf_items() 
-    print('---------->')
-    debug(returns)
-    printtable(returns)
-    # printtable(transactions)
-    # printtable(gross_lev)
-    returns.index = returns.index.tz_convert(None)
-    quantstats.reports.html(returns,  download_filename= quantstats_htmlname , output= True, title='分析报告')
-    
-    scheme = bt.plot.PlotScheme()
-    scheme.grid=False
-    scheme.subtxtsize =44 
-        
-    
-     
-    
-    
-    
-    # save orginal plot to png 
-    saveplots(cerebro,scheme ,volume=False, file_path =pngname) #run it
-    
-    # save using BacktraderPlotting
-    p = BacktraderPlotting(style='bar', output_mode='save', filename=btplotting_htmlname )
-    cerebro.plot(p , iplot=False)
-        
-    # replace htmlname substirng tmphtml to public
+    saveResult(cerebro,strats )
+ 
     json_compatible_item_data = jsonable_encoder(
         {"code":200,
         "btplotting_htmlname":btplotting_htmlname.replace('tmphtml','public'),
