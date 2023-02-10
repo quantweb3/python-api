@@ -4,13 +4,19 @@ from colorama import Fore, Back, Style
 
 
 def debug(para):
-    pprint(vars( para   ))
+    paraType=type(para)
+    if paraType==dict:
+       pprint(vars( para   ))
+    if paraType==list:
+       pprint( para)
     
     
 def printtable(y):
    if isinstance(y, pandas.core.frame.DataFrame):
     print(Fore.RED + '---------------------------------------------------------------------')
-    print(y.to_string())
+    # print first 10 lines
+    print(y.head(10).to_string())  
+   #  print(y.to_string())
     print(Fore.RED + '---------------------------------------------------------------------')
     print(Style.RESET_ALL)
     

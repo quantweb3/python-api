@@ -5,16 +5,20 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from django.http import HttpResponse
 import backtrader as bt
+
 import pandas as pd
 import random
 from datetime import datetime
 import IPython   
 from btplotting import BacktraderPlottingLive
 from btplotting import BacktraderPlotting
-from tools.functions import saveplots
 import matplotlib 
 sys.path.append("..")
 from strategy.TestStrategy import TestStrategy
+from strategy.SMA20Strategy import SMA20Strategy
+from tools.functions import *
+from tools.debuger import *
+
 
 
 matplotlib.rc("font", family='Microsoft YaHei')# 增加
@@ -33,19 +37,18 @@ async def bttestChart():
     cerebro = bt.Cerebro()
     
     #获取数据
-    ## current running file path 
-    currentPath =os.path.dirname (os.path.realpath(__file__))
-    ## get parent path from current path
-    parentPath = os.path.dirname(currentPath)
-    csv_name = 'sz000001.csv'
-    stock_hfq_df = pd.read_csv(os.path.join( parentPath, 'data/', csv_name), index_col='date', parse_dates=True)
-
+    # join path and filename
+    csv_name = datapath()+'/600519.SH.csv'
+    # csv_name=  datapath()+'/sz000001.csv'
+    stock_hfq_df = pd.read_csv( csv_name, index_col='date', parse_dates=True)
+    # printtable(stock_hfq_df)
+    # return 1;
     #添加策略
-    cerebro.addstrategy(TestStrategy )
+    # cerebro.addstrategy(TestStrategy )
+    cerebro.addstrategy(SMA20Strategy )
     
-    
-    start_date = datetime(2019, 8, 1)  # 回测开始时间
-    end_date = datetime(2022, 8, 30)  # 回测结束时间
+    start_date = datetime(2019, 1, 1)  # 回测开始时间
+    end_date = datetime(2019, 12, 31)  # 回测结束时间
     data = bt.feeds.PandasData(dataname=stock_hfq_df, fromdate=start_date, todate=end_date)  # 加载数据
     
     cerebro.adddata(data)  # 将数据传入回测系统
@@ -54,7 +57,17 @@ async def bttestChart():
     # cerebro.addanalyzer(BacktraderPlottingLive)
     # cerebro.addanalyzer(BacktraderPlotting)
     
+    cerebro.addanalyzer(bt.analyzers.PyFolio, _name='利润')
     cerebro.run()
+    
+    scheme = bt.plot.PlotScheme()
+    scheme.grid=False
+    scheme.subtxtsize =44 
+        
+        
+    # figure = cerebro.plot(scheme = scheme , numfigs=1, iplot=True, volume=False, style ='line')[0][0]
+    # figure.savefig('example.png')
+   
     
     # generate random file name by date 
     filename=  datetime.now().strftime("%Y%m%d%H%M%S")+ str(random.randint(100000,999999))
@@ -63,8 +76,10 @@ async def bttestChart():
     #  f-string  add .png to filename
     pngname  = f'tmphtml/{filename}.png'
     htmlname = f'tmphtml/{filename}.html'
-     
-    saveplots(cerebro, file_path =pngname) #run it
+    # save orginal plot to png 
+    saveplots(cerebro,scheme ,volume=False, file_path =pngname) #run it
+    
+    # save using BacktraderPlotting
     p = BacktraderPlotting(style='bar', output_mode='save', filename=htmlname )
     cerebro.plot(p , iplot=False)
         

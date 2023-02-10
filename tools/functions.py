@@ -7,8 +7,9 @@ import platform
 from sqlalchemy import create_engine
 from urllib.parse import quote  
 import configparser 
-
-
+import backtrader as bt
+from backtrader import plot
+ 
 def getConfig():
   
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -25,7 +26,6 @@ def getTushareToken():
     return  config.get('tushare', 'tusharekey')  
 
 def getDbConn():
-  
     config = getConfig()
     mydb = pymysql.connect(
     host= config.get('mysql', 'host'),
@@ -37,32 +37,14 @@ def getDbConn():
     )
     return mydb             
     
- 
-def saveplots(cerebro, numfigs=1, iplot=True, start=None, end=None,
-             width=16, height=9, dpi=300, tight=True, use=None, file_path = '', **kwargs):
 
-        from backtrader import plot
-        if cerebro.p.oldsync:
-            plotter = plot.Plot_OldSync(**kwargs)
-        else:
-            plotter = plot.Plot(**kwargs)
+def rootpath():
+    config = getConfig()
+    return  config.get('path', 'rootpath')  
 
-        figs = []
-        for stratlist in cerebro.runstrats:
-            for si, strat in enumerate(stratlist):
-                rfig = plotter.plot(strat, figid=si * 100,
-                                    numfigs=numfigs, iplot=iplot,
-                                    start=start, end=end, use=use)
-                figs.append(rfig)
-
-        for fig in figs:
-            for f in fig:
-                f.savefig(file_path, bbox_inches='tight')
-        return figs
-
-
- 
-
+def datapath():
+    config = getConfig()
+    return  config.get('path', 'datapath')  
 
 def showDayDetail(record):
     print("当前日期:%s,开盘价格:%s ,收盘价格:%s ,交易量:%s" %(record.datetime.date(0),record.open[0],record.close[0],record.volume[0]))
@@ -120,16 +102,14 @@ def printHuminfo():
     # print(f'总资金: {round(portvalue,2)}')
     
 
-        
-## 保原始回测图片        
-def saveplots(cerebro, numfigs=1, iplot=True, start=None, end=None,
-             width=16, height=9, dpi=900, tight=True, use=None, file_path = '', **kwargs):
+def saveplots(cerebro,scheme, numfigs=1, iplot=True, start=None, end=None,
+             width=16, height=9, dpi=300, tight=True, use=None, file_path = '', **kwargs):
 
         from backtrader import plot
         if cerebro.p.oldsync:
             plotter = plot.Plot_OldSync(**kwargs)
         else:
-            plotter = plot.Plot(**kwargs)
+            plotter = plot.Plot( scheme=scheme, **kwargs)
 
         figs = []
         for stratlist in cerebro.runstrats:
@@ -143,3 +123,4 @@ def saveplots(cerebro, numfigs=1, iplot=True, start=None, end=None,
             for f in fig:
                 f.savefig(file_path, bbox_inches='tight')
         return figs
+  
