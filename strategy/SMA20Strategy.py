@@ -13,6 +13,7 @@ from indicators.Bias import Bias
 
 
 class SMA20Strategy(bt.Strategy):
+    
     params = (
         ('m', 20),
     )
