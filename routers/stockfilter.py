@@ -13,7 +13,7 @@ import os
 import sys
 
 
-stockfilter_router = APIRouter(
+stockfilter = APIRouter(
     # 这里配置的 tags、dependencies、responses 对这个模块的内的所有路径操作都生效
     # 路径前缀，该模块下所有路径操作的前缀
     prefix="/stockfilter",
@@ -25,7 +25,7 @@ stockfilter_router = APIRouter(
 )
 
 
-@stockfilter_router.post('/filter213')
+@stockfilter.post('/filter213')
 async def filter213():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
     filter213=StockFilter213({})
@@ -36,7 +36,7 @@ async def filter213():
 
 
 ## 筛选:三低
-@stockfilter_router.post('/filterThreeLow',tags=["stockfilter"])
+@stockfilter.post('/filterThreeLow',tags=["stockfilter"])
 def filterThreeLow():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
     filter3D=StockFilterThreeDown({})
@@ -46,7 +46,7 @@ def filterThreeLow():
     
  
 ## 筛选:三低 高开低走巨阴
-@stockfilter_router.post('/filterOpenHighCloseLowVolUp')
+@stockfilter.post('/filterOpenHighCloseLowVolUp')
 def filterOpenHighCloseLowVolUp( item: dict ):
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
     filterHLV=StockFilterHIghLowVolUp(item)

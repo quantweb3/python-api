@@ -1,3 +1,4 @@
-from .stock import stock_router 
-from .stockfilter import stockfilter_router 
+from .stock import stock
+from .stockfilter import stockfilter
 from .bttest import bttest
+from .chan import chan

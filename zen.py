@@ -3,7 +3,7 @@ from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 # 导入子路由
-from routers import stock_router,stockfilter_router,bttest
+from routers import stock,stockfilter,bttest,chan 
 
 tags_metadata = [{"name":"stock","description":"ZenFramework"}]
 
@@ -22,9 +22,10 @@ app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,a
 
 
 # 添加子路由
-app.include_router(stock_router)
-app.include_router(stockfilter_router)
+app.include_router(stock)
+app.include_router(stockfilter)
 app.include_router(bttest)
+app.include_router(chan)
 
 ## 静态文件
 app.mount('/public', StaticFiles(directory="tmphtml"), 'public')

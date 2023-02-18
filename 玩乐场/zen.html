@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>ECharts</title>
+    <!-- 引入刚刚下载的 ECharts 文件 -->
+    <script src="echarts.js"></script>
+</head>
+
+<body>
+    <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+    <div id="main"
+         style="width: 1400px;height:600px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        async function postData(url = '',data = {}) {
+            // Default options are marked with *
+            const response = await fetch(url,{
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify(data) // body data type must match "Content-Type" header
+            });
+            return await response.json(); // parses JSON response into native JavaScript objects
+        }
+
+        // usage
+        postData('http://127.0.0.1:3001/chan/charts',{code: "SZ.399011",frequencys: ["120m"]})
+            .then(data => {
+
+                var bigstr = data.charts[0].chart;
+                // use eval to assign bigstr to a variable
+                var option = eval("option= (" + bigstr + ")");
+                console.log(option);
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+
+
+            });
+
+
+    </script>
+</body>
+
+</html>
